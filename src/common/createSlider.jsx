@@ -18,6 +18,7 @@ export default function createSlider(Component) {
       min: PropTypes.number,
       max: PropTypes.number,
       step: PropTypes.number,
+      multipleStepScale: PropTypes.bool,
       marks: PropTypes.object,
       included: PropTypes.bool,
       className: PropTypes.string,
@@ -50,6 +51,7 @@ export default function createSlider(Component) {
       min: 0,
       max: 100,
       step: 1,
+      multipleStepScale: false,
       marks: {},
       handle({ index, ...restProps }) {
         delete restProps.dragging;
@@ -72,7 +74,7 @@ export default function createSlider(Component) {
     constructor(props) {
       super(props);
 
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env.NODE_ENV !== 'production' && !props.multipleStepScale) {
         const { step, max, min } = props;
         warning(
           step && Math.floor(step) === step ? (max - min) % step === 0 : true,

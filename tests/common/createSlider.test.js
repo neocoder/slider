@@ -52,6 +52,24 @@ describe('createSlider', () => {
     expect(rangeWrapper.state('bounds')[1]).toBe(90);
   });
 
+  it('should set values based on multiple step scale', () => {
+    const baseProps = { multipleStepScale: true, min: 1, max: 1000, step: 50 };
+
+    const tests = [
+      { propValue: 0, stateValue: 1 },
+      { propValue: 1, stateValue: 1 },
+      { propValue: 990, stateValue: 1000 },
+      { propValue: 1000, stateValue: 1000 },
+      { propValue: 1001, stateValue: 1000 },
+      { propValue: 49, stateValue: 50 },
+    ];
+
+    tests.forEach(({ propValue, stateValue }) => {
+      const slider = mount(<Slider {...baseProps} value={propValue} />);
+      expect(slider.state('value')).toBe(stateValue);
+    });
+  });
+
   it('should update value when it is out of range', () => {
     const sliderOnChange = jest.fn();
     const sliderWrapper = mount(<Slider onChange={sliderOnChange} />);
